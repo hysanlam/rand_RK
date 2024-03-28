@@ -12,7 +12,7 @@ function Y = matFull(i,x,target_rank)
             %Y = X*pinv(Y'*Omega)*Y';
             [Q, ~]=qr(X,"econ");
             P=(Psi'*Q)\Y';
-            [U,S,V]=svd(P);
+            [U,S,V]=svd(P,"econ");
 
             Y = Q*U(:,1:target_rank)*S(1:target_rank,1:target_rank)*V(:,1:target_rank)';
             
