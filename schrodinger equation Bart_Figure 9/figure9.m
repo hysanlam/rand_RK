@@ -84,8 +84,8 @@ parfor count=1:length(rank)
     r=rank(count)
         stream = sc.Value;        % set each worker seed
         stream.Substream =count;
-        p=round(0.1*r)
-        l = round(0.1*r);  %over-parametrization.
+        p= max(2,round(0.1*r));
+        l = max(2,round(0.1*r));  %over-parametrization.
         Omega = randn(stream,n,r+p);
         Psi = randn(stream,n, r+l+p);
 
