@@ -133,13 +133,14 @@ subplot(1,3,2)
     
     legendStr = [];
 
-    legendStr = [["Rand rk4","Rand rk3","Rand rk2"], "slope 4","Best approximation"];
+    legendStr = [["Rand rk4","Rand rk3","Rand rk2"], "slope 2", "slope 3", "slope 4"];
 
     legend(legendStr)
     xlabel('\Deltat')
     ylabel('|| Y^{ref} - Y^{approx} ||_F')
     ylim([1e-10 1e1])
     grid on
+    set(gca,'FontSize',18)
 subplot(1,3,3)
    title('Randomized DLRA')
     loglog(time, err_table_all_fixed_rank(1:length(ranks),:).','LineWidth',1,'Marker','o')
