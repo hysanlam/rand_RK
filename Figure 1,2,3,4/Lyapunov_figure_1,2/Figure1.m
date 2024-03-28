@@ -1,5 +1,4 @@
-%% Compare with PRK 
-%% here we compare two cases, alpha=0.01  and alpha=10 (need to change manually below):
+%% Compare with PRK
     
 
     % addpath and cleaning enviroment

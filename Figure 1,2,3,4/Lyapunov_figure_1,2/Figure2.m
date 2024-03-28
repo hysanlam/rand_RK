@@ -1,6 +1,5 @@
 %% Compare with PRK 
-%% here we compare two cases, alpha=0.01  and alpha=10 (need to change manually below):
-    
+
 
     % addpath and cleaning enviroment
     addpath('../../rDLR-core')
