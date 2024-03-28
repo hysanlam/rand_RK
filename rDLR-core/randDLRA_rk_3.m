@@ -39,11 +39,12 @@ function y = randDLRA_rk_3(x0,F,t0,t1,target_rank,stream,constant_sketch)
     F_temp_2=F(matFull(1,{temp1{1},temp1{2},Omega_2,Psi_2},target_rank),t0+dt/2 );
     k1{1}= F_temp_2*Omega_1;
     k1{2}=F_temp_2'*Psi_1;
+    clear F_temp_2
     
     F_temp_3=F(matFull(1,{temp1{1},temp1{2},Omega_2,Psi_2},target_rank),t0+dt./2);
     temp2{1}=matFull(1,{X,Y,Omega,Psi},target_rank)*Omega_3+2*dt*F_temp_3*Omega_3-dt*F_temp_1*Omega_3;
     temp2{2}=matFull(1,{X,Y,Omega,Psi},target_rank)'*Psi_3+2*dt*F_temp_3'*Psi_3-dt*F_temp_1'*Psi_3;
-    clear temp1
+    clear temp1 F_temp_1
 
     k2{1}= F(matFull(1,{temp2{1},temp2{2},Omega_3,Psi_3},target_rank),t0+dt  )*Omega_1;
     k2{2}=F(matFull(1,{temp2{1},temp2{2},Omega_3,Psi_3},target_rank),t0+dt )'*Psi_1;

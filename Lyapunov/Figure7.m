@@ -29,16 +29,16 @@
 
     ref = integral(@(s) expm((T-s)*A)*C*expm((T-s)*A'),0,T, 'ArrayValued', true,'AbsTol',1e-10)+expm((T)*A)*Y0*expm((T)*A');
 
-%% Randomized DLR algorithm
+%% Randomized DLR algorithm with different solvers (middle plot)
 
-    time =logspace(log10(1e-1), log10(1e-4),12);
+    time =logspace(log10(1e-1), log10(1e-4),5);
     
     stream=RandStream('mt19937ar','Seed',123)
     err_table_all = []; 
     for funname=["randDLRA_rk_4","randDLRA_rk_3","randDLRA_rk_2"]
             r = 32; %[2,4,8,16,32]
-            l = round(0.1*r);  %over-parametrization.
-            p = round(0.1*r)
+            l =max(2,round(0.1*r));  %over-parametrization.
+            p =max(2,round(0.1*r));
             Omega = randn(N,r+p);
             Psi = randn(N, r+l+p);
             
@@ -69,8 +69,47 @@
         err_table_all=[err_table_all;errTable_randDLRA];
     end
 
+%%Randomized RK3 with different ranks
+   time = logspace(log10(1e-1), log10(1e-4),5); %[0.5,1e-1,1e-2,1e-3,1e-4];
+    ranks = [4,8,16,32]; %[2,4,8,16,32]
+
+    err_table_all_fixed_rank = []; 
+    sc = parallel.pool.Constant(RandStream("threefry",Seed=1234)); % set seed 
+    parfor count=1:length(ranks)
+            stream = sc.Value;        % set each worker seed
+            stream.Substream =count;
+            r=ranks(count);
+            l = max(2,round(0.1*r));  %over-parametrization.
+            p =  max(2,round(0.1*r));
+            Omega = randn(stream,N,r+p);
+            Psi = randn(stream,N, r+l+p);
+            
+            X = Y0*Omega; %right-sketch
+            Y = Y0'*Psi;  %left-sketch
+        
+            Y_inital = {X,Y,Omega,Psi};
+           % ref = matOdeSolver(matFull(-1,Y0),F,0,T);  
+            errTable_randDLRA = [];   
+            for dt = time  
+            
+                Y_randDLRA = Y_inital;
+                maxT = round(T/dt);
+                for i=1:maxT
+                    Y_randDLRA = randDLRA_rk_3(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non constant_sketch");
+                    %fprintf("r = %d, t = %f \n", r, i*dt);
+                end
+                ref = integral(@(s) expm((i*dt-s)*A)*C*expm((i*dt-s)*A'),0,i*dt, 'ArrayValued', true,'AbsTol',1e-10)+expm((i*dt)*A)*Y0*expm((i*dt)*A');
+                err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
+                errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
+                fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
+            end
+
+       err_table_all_fixed_rank =[err_table_all_fixed_rank;errTable_randDLRA];
+    end
+
+
 %% Plotting
-subplot(1,2,1)
+subplot(1,3,1)
     [U,sg,V] = svd(ref);
     ymin = min(diag(sg));
     ymax = max(diag(sg));
@@ -81,10 +120,12 @@ subplot(1,2,1)
         grid on
     set(gca,'FontSize',18)
 
-subplot(1,2,2)
+subplot(1,3,2)
     title('Projected Runge-Kutta')
     loglog(time, err_table_all(1:3,:).','LineWidth',1,'Marker','o')
         hold on
+     loglog(time,(10.*time).^2,'--','LineWidth',1)
+      loglog(time,(3.*time).^3,'--','LineWidth',1)
     loglog(time,(2.*time).^4,'--','LineWidth',1)
     yline(norm(ref-U(:,1:r)*sg(1:r,1:r)*V(:,1:r)',"fro"),"LineWidth",1.5);
         
@@ -97,7 +138,26 @@ subplot(1,2,2)
     legend(legendStr)
     xlabel('\Deltat')
     ylabel('|| Y^{ref} - Y^{approx} ||_F')
-    ylim([1e-8 1e1])
+    ylim([1e-10 1e1])
+    grid on
+subplot(1,3,3)
+   title('Randomized DLRA')
+    loglog(time, err_table_all_fixed_rank(1:length(ranks),:).','LineWidth',1,'Marker','o')
+        hold on
+    loglog(time,(2.*time).^3,'--','LineWidth',1)
+        
+    legend('Location','southeast')
+    
+    legendStr = [];
+    for r = ranks
+        legendStr = [legendStr, "rDLR rank = " + num2str(r)];
+    end
+    legendStr = [legendStr, "slope 3"];
+
+    legend(legendStr)
+    xlabel('\Deltat')
+    ylabel('|| Y^{ref} - Y^{approx} ||_F')
+    ylim([ymin ymax])
     grid on
 
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
