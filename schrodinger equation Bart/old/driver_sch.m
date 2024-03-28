@@ -86,7 +86,7 @@ end
 
 %% Plotting
 
-subplot(1,2,1)
+subplot(1,3,1)
     sg = svd(ref);
     ymin = min(sg);
     ymax = max(sg);
@@ -97,7 +97,7 @@ subplot(1,2,1)
         grid on
     set(gca,'FontSize',18)
 
-subplot(1,2,2)
+subplot(1,3,2)
     title('Randomized DLRA')
     loglog(Time, err_table_all(1:length(rank),:).','LineWidth',1,'Marker','o')
         hold on
@@ -118,9 +118,31 @@ subplot(1,2,2)
     xlim([min(Time),max(Time)])
     grid on
 
-    set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
-    % Get rid of tool bar and pulldown menus that are along top of figure.
-    set(gcf, 'Toolbar', 'none', 'Menu', 'none');
-    set(gca,'FontSize',18)
+  
 
     %saveas(gcf,'randDLRA_rk4.fig')
+    subplot(1,3,3)
+   title('Randomized DLRA')
+    loglog(time, err_table_all_fixed_rank(1:length(ranks),:).','LineWidth',1,'Marker','o')
+        hold on
+    loglog(time,(2.*time).^3,'--','LineWidth',1)
+        
+    legend('Location','southeast')
+    
+    legendStr = [];
+    for r = ranks
+        legendStr = [legendStr, "Rand RK3 rank = " + num2str(r)];
+    end
+    legendStr = [legendStr, "slope 3"];
+
+    legend(legendStr)
+    xlabel('\Deltat')
+    ylabel('|| Y^{ref} - Y^{approx} ||_F')
+    ylim([ymin ymax])
+    grid on
+
+    set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
+    % Get rid of tool bar and pulldown menus that are along top of figure.
+    %set(gcf, 'Toolbar', 'none', 'Menu', 'none');
+    set(gca,'FontSize',18)
+    %saveas(gcf,'randDLRA_diff_solver_r16.fig')
