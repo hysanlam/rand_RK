@@ -31,7 +31,7 @@
 
 %% Randomized DLR algorithm with different solvers (middle plot)
 
-    time =logspace(log10(1e-1), log10(1e-4),5);
+    time =logspace(log10(1e-1), log10(1e-4),10);
     
     stream=RandStream('mt19937ar','Seed',123)
     err_table_all = []; 
@@ -70,7 +70,7 @@
     end
 
 %%Randomized RK3 with different ranks
-   time = logspace(log10(1e-1), log10(1e-4),5); %[0.5,1e-1,1e-2,1e-3,1e-4];
+   time = logspace(log10(1e-1), log10(1e-4),10); %[0.5,1e-1,1e-2,1e-3,1e-4];
     ranks = [4,8,16,32]; %[2,4,8,16,32]
 
     err_table_all_fixed_rank = []; 
@@ -150,7 +150,7 @@ subplot(1,3,3)
     
     legendStr = [];
     for r = ranks
-        legendStr = [legendStr, "rDLR rank = " + num2str(r)];
+        legendStr = [legendStr, "Rand RK3 rank = " + num2str(r)];
     end
     legendStr = [legendStr, "slope 3"];
 
@@ -162,7 +162,7 @@ subplot(1,3,3)
 
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
     % Get rid of tool bar and pulldown menus that are along top of figure.
-    set(gcf, 'Toolbar', 'none', 'Menu', 'none');
+    %set(gcf, 'Toolbar', 'none', 'Menu', 'none');
     set(gca,'FontSize',18)
     %saveas(gcf,'randDLRA_diff_solver_r16.fig')
     
