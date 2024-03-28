@@ -78,19 +78,6 @@ err_table_all=[];
 
  err_rk4=[];
 
-    % for dt = Time
-    % 
-    %     Z=Z0;
-    % 
-    %     for i=1:(T/dt)
-    %         Z=rk4(Z, F, dt,(i-1)*dt,i*dt);
-    % 
-    %     end
-    %     err_rk4=[err_rk4,norm(Z - ref, 'fro')];
-    % end
-
-
-%% Plotting
 
 subplot(1,2,1)
     sg = svd(ref);

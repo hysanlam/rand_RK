@@ -136,9 +136,9 @@ subplot(1,3,2)
     title('Projected Runge-Kutta')
     loglog(Time, err_table_all(1:3,:).','LineWidth',1,'Marker','o')
         hold on
-    loglog(Time,(27.*Time).^1,'--','LineWidth',1)
-    loglog(Time,(7.*Time).^2,'--','LineWidth',1)
-    loglog(Time,(2.*Time).^3,'--','LineWidth',1)
+    loglog(Time,(400.*Time).^1,'--','LineWidth',1)
+    loglog(Time,(27.*Time).^2,'--','LineWidth',1)
+    loglog(Time,(10.*Time).^3,'--','LineWidth',1)
     yline(norm(ref-U(:,1:r)*sg(1:r,1:r)*V(:,1:r)',"fro"),"LineWidth",1.5);
         
     legend('Location','southeast')
@@ -150,7 +150,7 @@ subplot(1,3,2)
     legend(legendStr)
     xlabel('\Deltat')
     ylabel('|| Y^{ref} - Y^{approx} ||_F')
-    ylim([5e-5 5e1])
+    ylim([1e-8 5e1])
     grid on
 
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
@@ -162,9 +162,9 @@ subplot(1,3,3)
     title('Projected Runge-Kutta')
     loglog(Time, err_table_all_prk(1:3,:).','LineWidth',1,'Marker','o')
         hold on
-    loglog(Time,(27.*Time).^1,'--','LineWidth',1)
-    loglog(Time,(7.*Time).^2,'--','LineWidth',1)
-    loglog(Time,(2.*Time).^3,'--','LineWidth',1)
+    loglog(Time,(400.*Time).^1,'--','LineWidth',1)
+    loglog(Time,(17.*Time).^2,'--','LineWidth',1)
+    loglog(Time,(10.*Time).^3,'--','LineWidth',1)
     yline(norm(ref-U(:,1:r)*sg(1:r,1:r)*V(:,1:r)',"fro"),"LineWidth",1.5);
         
     legend('Location','southeast')
@@ -176,7 +176,7 @@ subplot(1,3,3)
     legend(legendStr)
     xlabel('\Deltat')
     ylabel('|| Y^{ref} - Y^{approx} ||_F')
-    ylim([5e-5 5e1])
+    ylim([1e-8 5e1])
     grid on
 
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
