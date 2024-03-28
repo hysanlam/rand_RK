@@ -4,7 +4,7 @@
     clc; clear; rng(123);
 
 %% Parameters:
-   N = 500;    %Size.
+   N = 500;     %Size.
     T = .5;     %Final time.
 
     a = 1;
@@ -27,8 +27,7 @@
     %Y0 = ones(n,n) + 10^-3*randn(n,n);
     Z0 = Y0;
 
-    ref = integral(@(s) expm((T-s)*A)*C*expm((T-s)*A'),0,T, 'ArrayValued', true,'AbsTol',1e-10)+expm((T)*A)*Y0*expm((T)*A');
-
+    ref =  odeSolver(Y0,F,0,T);
 %% Randomized DLR algorithm with different solvers (middle plot)
 
     time =logspace(log10(1e-1), log10(1e-4),10);
@@ -60,7 +59,7 @@
                     %fprintf("r = %d, t = %f \n", r, i*dt);
                 end
                 
-                ref = integral(@(s) expm((i*dt-s)*A)*C*expm((i*dt-s)*A'),0,i*dt, 'ArrayValued', true,'AbsTol',1e-10)+expm((i*dt)*A)*Y0*expm((i*dt)*A');
+                ref = odeSolver(Y0,F,0,i*dt);
                 err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
                 errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
                 fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
@@ -69,7 +68,7 @@
         err_table_all=[err_table_all;errTable_randDLRA];
     end
 
-%%Randomized RK3 with different ranks
+%%Randomized RK3 with different ranks (right plot)
    time = logspace(log10(1e-1), log10(1e-4),10); %[0.5,1e-1,1e-2,1e-3,1e-4];
     ranks = [4,8,16,32]; %[2,4,8,16,32]
 
@@ -98,7 +97,7 @@
                     Y_randDLRA = randDLRA_rk_3(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non constant_sketch");
                     %fprintf("r = %d, t = %f \n", r, i*dt);
                 end
-                ref = integral(@(s) expm((i*dt-s)*A)*C*expm((i*dt-s)*A'),0,i*dt, 'ArrayValued', true,'AbsTol',1e-10)+expm((i*dt)*A)*Y0*expm((i*dt)*A');
+                ref =odeSolver(Y0,F,0,i*dt);
                 err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
                 errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
                 fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
@@ -133,7 +132,7 @@ subplot(1,3,2)
     
     legendStr = [];
 
-    legendStr = [["Rand rk4","Rand rk3","Rand rk2"], "slope 2", "slope 3", "slope 4"];
+    legendStr = [["Rand RK4","Rand RK3","Rand RK2"], "slope 2", "slope 3", "slope 4"];
 
     legend(legendStr)
     xlabel('\Deltat')

@@ -7,9 +7,6 @@
 K=200;  
 N=K
 n=K
-
-
-
 T=5;
 
 M =diag(1*ones(1,K-1),1) + diag(1*ones(1,K-1),-1);
@@ -31,6 +28,7 @@ for i=1:K
     end
 end
 
+%% differential equation:
 alpha=0.6;
 H = @(Y)   1i*(0.5*(M*Y+Y*M)+alpha*(abs(Y).^2).*Y); 
 
@@ -41,8 +39,9 @@ toc
 F=@(Y,t) H(Y);
 stream=RandStream('mt19937ar','Seed',123)
 Time=logspace(log10(1e-1), log10(1e-3),8)
-
 err_table_all = []; 
+
+%% randRK with different order (middle plot)
     for funname=["randDLRA_rk_4","randDLRA_rk_3","randDLRA_rk_2"]
             r = 30; %[2,4,8,16,32]
             l = round(0.1*r);  %over-parametrization.
@@ -75,18 +74,8 @@ err_table_all = [];
 
         err_table_all=[err_table_all;errTable_randDLRA];
     end
-% err_rk4=[];
-%     for dt = [1e-2,1e-3,1e-4,1e-5]
-% 
-%         Z=Y0;
-% 
-%         for i=1:(T/dt)
-%             Z=rk4(Z, F, dt);
-% 
-%         end
-%         err_rk4=[err_rk4,norm(Z - ref, 'fro')]
-%     end
 
+%% randRK 3 (right plot)
 time=logspace(log10(1e-1), log10(1e-4),12)
 err_table_all_fixed_rank=[];
 rank=[15,20,25,30]
@@ -118,6 +107,7 @@ parfor count=1:length(rank)
     end
     err_table_all_fixed_rank=[err_table_all_fixed_rank;errTable_randDLRA]
 end
+
 %% Plotting
 subplot(1,3,1)
     [U,sg,V] = svd(ref);
@@ -172,7 +162,5 @@ subplot(1,3,3)
     grid on
 
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
-    % Get rid of tool bar and pulldown menus that are along top of figure.
-    %set(gcf, 'Toolbar', 'none', 'Menu', 'none');
     set(gca,'FontSize',18)
-    %saveas(gcf,'randDLRA_diff_solver_r16.fig')
+ 
