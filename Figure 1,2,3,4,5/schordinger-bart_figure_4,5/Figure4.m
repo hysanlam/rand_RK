@@ -19,9 +19,9 @@ M =diag(1*ones(1,K-1),1) + diag(1*ones(1,K-1),-1);
 
 %%Change cases here:
 %% case 1:
-%% alpha=0.1; r=8; Time=logspace(log10(5e-1), log10(7.5e-4),12);
+ alpha=0.1; r=8; Time=logspace(log10(5e-1), log10(7.5e-4),12);
 %% case 2: 
- alpha=0.6; r=25; Time= logspace(log10(5e-2), log10(7.5e-4),10);
+% alpha=0.6; r=25; Time= logspace(log10(5e-2), log10(7.5e-4),10);
 
 %% Initial Data:
 
@@ -136,9 +136,9 @@ subplot(1,3,2)
     title('Projected Runge-Kutta')
     loglog(Time, err_table_all(1:3,:).','LineWidth',1,'Marker','o')
         hold on
-    loglog(Time,(400.*Time).^1,'--','LineWidth',1)
-    loglog(Time,(27.*Time).^2,'--','LineWidth',1)
-    loglog(Time,(10.*Time).^3,'--','LineWidth',1)
+    loglog(Time,(27.*Time).^1,'--','LineWidth',1)
+    loglog(Time,(7.*Time).^2,'--','LineWidth',1)
+    loglog(Time,(2.*Time).^3,'--','LineWidth',1)
     yline(norm(ref-U(:,1:r)*sg(1:r,1:r)*V(:,1:r)',"fro"),"LineWidth",1.5);
         
     legend('Location','southeast')
@@ -150,7 +150,7 @@ subplot(1,3,2)
     legend(legendStr)
     xlabel('\Deltat')
     ylabel('|| Y^{ref} - Y^{approx} ||_F')
-    ylim([1e-8 5e1])
+    ylim([5e-5 5e1])
     grid on
 
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
@@ -162,9 +162,9 @@ subplot(1,3,3)
     title('Projected Runge-Kutta')
     loglog(Time, err_table_all_prk(1:3,:).','LineWidth',1,'Marker','o')
         hold on
-    loglog(Time,(400.*Time).^1,'--','LineWidth',1)
-    loglog(Time,(17.*Time).^2,'--','LineWidth',1)
-    loglog(Time,(10.*Time).^3,'--','LineWidth',1)
+    loglog(Time,(27.*Time).^1,'--','LineWidth',1)
+    loglog(Time,(7.*Time).^2,'--','LineWidth',1)
+    loglog(Time,(2.*Time).^3,'--','LineWidth',1)
     yline(norm(ref-U(:,1:r)*sg(1:r,1:r)*V(:,1:r)',"fro"),"LineWidth",1.5);
         
     legend('Location','southeast')
@@ -176,7 +176,7 @@ subplot(1,3,3)
     legend(legendStr)
     xlabel('\Deltat')
     ylabel('|| Y^{ref} - Y^{approx} ||_F')
-    ylim([1e-8 5e1])
+    ylim([5e-5 5e1])
     grid on
 
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
