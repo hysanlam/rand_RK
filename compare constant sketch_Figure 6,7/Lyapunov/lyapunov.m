@@ -27,8 +27,7 @@
     %Y0 = ones(n,n) + 10^-3*randn(n,n);
     Z0 = Y0;
 
-    ref = integral(@(s) expm((T-s)*A)*C*expm((T-s)*A'),0,T, 'ArrayValued', true,'AbsTol',1e-10)+expm((T)*A)*Y0*expm((T)*A');
-
+    ref = odeSolver(Y0,F,0,T);
 %% Randomized DLR algorithm using non-constant drm
 
     time =logspace(log10(1e-1), log10(1e-3),10);
@@ -66,7 +65,7 @@
                         Y_randDLRA = fun(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non-constant_sketch"); %need to change for non consant sketch
                    
                     end               
-                    ref = integral(@(s) expm((i*dt-s)*A)*C*expm((i*dt-s)*A'),0,i*dt, 'ArrayValued', true,'AbsTol',1e-10)+expm((i*dt)*A)*Y0*expm((i*dt)*A');
+                    ref = odeSolver(Y0,F,0,i*dt);
                     err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
                     errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
                     fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
@@ -107,7 +106,7 @@
                         Y_randDLRA = fun(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"constant_sketch"); 
                    
                     end               
-                    ref = integral(@(s) expm((i*dt-s)*A)*C*expm((i*dt-s)*A'),0,i*dt, 'ArrayValued', true,'AbsTol',1e-10)+expm((i*dt)*A)*Y0*expm((i*dt)*A');
+                    ref = odeSolver(Y0,F,0,i*dt);
                     err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
                     errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
                     fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
