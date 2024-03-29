@@ -122,30 +122,30 @@ subplot(1,3,1)
 
 subplot(1,3,2)
     title('Projected Runge-Kutta')
-    loglog(Time, err_table_all(1:3,:).','LineWidth',1,'Marker','o')
+    loglog(Time, err_table_all(1:3,:).','LineWidth',1.5,'Marker','o')
         hold on
-     loglog(Time,(10.*Time).^2,'--','LineWidth',1)
-      loglog(Time,(3.*Time).^3,'--','LineWidth',1)
-    loglog(Time,(2.*Time).^4,'--','LineWidth',1)
-    yline(norm(ref-U(:,1:r)*sg(1:r,1:r)*V(:,1:r)',"fro"),"LineWidth",1.5);
+     loglog(Time,(16.*Time).^2,'--','LineWidth',1.5)
+      loglog(Time,(7.*Time).^3,'--','LineWidth',1.5)
+    loglog(Time,(4.*Time).^4,'--','LineWidth',1.5)
+    %yline(norm(ref-U(:,1:r)*sg(1:r,1:r)*V(:,1:r)',"fro"),"LineWidth",1.5);
         
     legend('Location','southeast')
     
     legendStr = [];
 
-    legendStr = [["Rand rk4","Rand rk3","Rand rk2"], "slope 2", "slope 3", "slope 4"];
+    legendStr = [["Rand Rk4","Rand Rk3","Rand Rk2"], "slope 2", "slope 3", "slope 4"];
 
     legend(legendStr)
     xlabel('\Deltat')
     ylabel('|| Y^{ref} - Y^{approx} ||_F')
-    ylim([1e-10 1e1])
+    ylim([1e-9 1e0])
     grid on
         set(gca,'FontSize',18)
 subplot(1,3,3)
    title('Randomized DLRA')
-    loglog(time, err_table_all_fixed_rank(1:length(rank),:).','LineWidth',1,'Marker','o')
+    loglog(time, err_table_all_fixed_rank(1:length(rank),:).','LineWidth',1.5,'Marker','o')
         hold on
-    loglog(time,(2.*time).^3,'--','LineWidth',1)
+    loglog(time,(5.*time).^3,'--','LineWidth',1.5)
         
     legend('Location','southeast')
     
@@ -158,7 +158,7 @@ subplot(1,3,3)
     legend(legendStr)
     xlabel('\Deltat')
     ylabel('|| Y^{ref} - Y^{approx} ||_F')
-    ylim([1e-10 1e1])
+    ylim([1e-9 1e0])
     grid on
 
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
