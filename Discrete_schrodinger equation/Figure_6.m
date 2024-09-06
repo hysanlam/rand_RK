@@ -1,6 +1,6 @@
-%% randomized DLRA
+
 % addpath and cleaning enviroment
-addpath('../rDLR-core')
+addpath('../randRK-core')
 clc; clear; rng(123)
 K=2^9;
 N=K
@@ -42,7 +42,7 @@ time=logspace(log10(2.5e-1), log10(5e-4),14);
 time=T./round(T./time);
 sc = parallel.pool.Constant(RandStream("threefry",Seed=123)); % set seed
 err_table_all=[];
-fun_name_rand=["randDLRA_rk_4","randDLRA_rk_3","randDLRA_rk_2","randDLRA_euler"];
+fun_name_rand=["rand_rk_4","rand_rk_3","rand_rk_2","rand_euler"];
 err_table_all = [];
 err_table_all_mutiple=zeros(length(fun_name_rand),length(time),numer_trials);
 for trial=1:numer_trials
@@ -61,25 +61,25 @@ for trial=1:numer_trials
 
         Y_inital = {X,Y,Omega,Psi};
         % ref = matOdeSolver(matFull(-1,Y0),F,0,T);
-        errTable_randDLRA = [];
+        errTable_randRK = [];
         for dt = time
 
-            Y_randDLRA = Y_inital;
+            Y_randRK = Y_inital;
             maxT = round(T/dt);
 
             for i=1:maxT
                 fun=str2func(fun_name_rand(funname));
 
-                Y_randDLRA = fun(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non_constant");
+                Y_randRK = fun(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"non_constant");
                 %fprintf("r = %d, t = %f \n", r, i*dt);
             end
             ref= odeSolver(Z0,H,0,i*dt);
-            err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
-            errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
-            fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
+            err_randRK = norm(matFull(1,Y_randRK,r) - ref, 'fro');
+            errTable_randRK = [errTable_randRK,err_randRK];
+            fprintf("randRK - dt = %f, err = %e \n", dt, err_randRK);
         end
 
-        err_table_all=[err_table_all;errTable_randDLRA];
+        err_table_all=[err_table_all;errTable_randRK];
     end
     err_table_all_mutiple(:,:,trial)=err_table_all;
 end
@@ -106,18 +106,18 @@ for trial=1:numer_trials
 
         Y_inital = {X,Y,Omega,Psi};
         % ref = matOdeSolver(matFull(-1,Y0),F,0,T);
-        errTable_randDLRA = [];
+        errTable_randRK = [];
         for dt = time
-            Y_randDLRA = Y_inital;
+            Y_randRK = Y_inital;
             for i=1:(T/dt)
-                Y_randDLRA = randDLRA_rk_4(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non constant_sketch");
+                Y_randRK = rand_rk_4(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"non constant_sketch");
             end
             ref=odeSolver(Y0,H,0,i*dt);
-            err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
-            errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
-            fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
+            err_randRK = norm(matFull(1,Y_randRK,r) - ref, 'fro');
+            errTable_randRK = [errTable_randRK,err_randRK];
+            fprintf("randRK - dt = %f, err = %e \n", dt, err_randRK);
         end
-        err_table_all_fixed_rank=[err_table_all_fixed_rank;errTable_randDLRA]
+        err_table_all_fixed_rank=[err_table_all_fixed_rank;errTable_randRK]
     end
     err_table_all_fixed_rank_mutiple(:,:,trial)=err_table_all_fixed_rank;
 end

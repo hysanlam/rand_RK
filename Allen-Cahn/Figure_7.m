@@ -1,8 +1,6 @@
-%% allen
-%% see Projection methods for dynamical low-rank approximation of high-dimensional problems 
 
     % addpath and cleaning enviroment
-    addpath('../rDLR-core')
+    addpath('../randRK-core')
     clc; clear; rng(123)
 K=256;  
 N=K
@@ -62,27 +60,27 @@ for count=1:length(rank)
 
         Y_inital = {X,Y,Omega,Psi};
        % ref = matOdeSolver(matFull(-1,Y0),F,0,T);  
-     errTable_randDLRA = [];   
+     errTable_randRK = [];   
      flag=1;
     for dt = Time
-        Y_randDLRA = Y_inital;        
+        Y_randRK = Y_inital;        
         for i=1:(T/dt)
-            Y_randDLRA = randDLRA_rk_4(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non constant_sketch");
+            Y_randRK = rand_rk_4(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"non constant_sketch");
             i
             if i*dt==1|| i*dt==3|| i*dt==5|| i*dt==7||i*dt==10
                ref= odeSolver(Y0,H,0,i*dt);
                ref_sol(:,:,flag)=ref;
-               rand_sol(:,:,flag)=matFull(1,Y_randDLRA,r);
+               rand_sol(:,:,flag)=matFull(1,Y_randRK,r);
                flag=flag+1;
                
             end
         end
 
-        err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
-        errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
-        fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
+        err_randRK = norm(matFull(1,Y_randRK,r) - ref, 'fro');
+        errTable_randRK = [errTable_randRK,err_randRK];
+        fprintf("randRK - dt = %f, err = %e \n", dt, err_randRK);
     end
-    err_table_all=[err_table_all;errTable_randDLRA]
+    err_table_all=[err_table_all;errTable_randRK]
 end
 
 

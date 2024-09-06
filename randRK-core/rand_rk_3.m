@@ -1,4 +1,4 @@
-function y = randDLRA_rk_3(x0,F,t0,t1,target_rank,stream,constant_sketch)
+function y = rand_rk_3(x0,F,t0,t1,target_rank,stream,constant_sketch)
 dt = t1-t0;
 
 X = x0{1};

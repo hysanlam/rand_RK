@@ -2,7 +2,7 @@
 
 
 % addpath and cleaning enviroment
-addpath('../rDLR-core')
+addpath('../randRK-core')
 clc; clear; rng(123);
 numer_trials=10;
 %% Parameters:
@@ -44,7 +44,6 @@ Y0=[U(:,1:2),U_perp(:,1:30)]*S(1:32,1:32)*[V(:,1:2),V_perp(:,1:30)]'
 %Y0=odeSolver(Y0,F,0,0.2);
 
 
-%% Randomized DLR algorithm
 
 time =logspace(log10(5e-2), log10(2.5e-4),9);
 %time =.5e-3
@@ -84,18 +83,18 @@ for trial=1:numer_trials
 
         Y_inital = {X,Y,Omega,Psi};
         % ref = matOdeSolver(matFull(-1,Y0),F,0,T);
-        errTable_randDLRA = [];
+        errTable_randRK = [];
         for dt = time
-            Y_randDLRA = Y_inital;
+            Y_randRK = Y_inital;
             for i=1:(T/dt)
-                Y_randDLRA = randDLRA_rk_4(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non_constant_complex");
+                Y_randRK = rand_rk_4(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"non_constant_complex");
             end
 
-            err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
-            errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
-            fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
+            err_randRK = norm(matFull(1,Y_randRK,r) - ref, 'fro');
+            errTable_randRK = [errTable_randRK,err_randRK];
+            fprintf("randRK - dt = %f, err = %e \n", dt, err_randRK);
         end
-        err_table_all_rk4(count,:)=errTable_randDLRA;
+        err_table_all_rk4(count,:)=errTable_randRK;
     end
     err_table_all_rk4_mutiple(:,:,trial)=err_table_all_rk4;
 end
@@ -120,18 +119,18 @@ for trial=1:numer_trials
 
         Y_inital = {X,Y,Omega,Psi};
         % ref = matOdeSolver(matFull(-1,Y0),F,0,T);
-        errTable_randDLRA = [];
+        errTable_randRK = [];
         for dt = time
-            Y_randDLRA = Y_inital;
+            Y_randRK = Y_inital;
             for i=1:(T/dt)
-                Y_randDLRA = randDLRA_rk_4(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"constant_sketch_complex");
+                Y_randRK = rand_rk_4(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"constant_sketch_complex");
             end
 
-            err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
-            errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
-            fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
+            err_randRK = norm(matFull(1,Y_randRK,r) - ref, 'fro');
+            errTable_randRK = [errTable_randRK,err_randRK];
+            fprintf("randRK - dt = %f, err = %e \n", dt, err_randRK);
         end
-        err_table_all_rk4(count,:)=errTable_randDLRA;
+        err_table_all_rk4(count,:)=errTable_randRK;
     end
     err_table_all_rk4_mutiple_constant(:,:,trial)=err_table_all_rk4;
 end
@@ -158,18 +157,18 @@ for trial=1:numer_trials
 
         Y_inital = {X,Y,Omega,Psi};
         % ref = matOdeSolver(matFull(-1,Y0),F,0,T);
-        errTable_randDLRA = [];
+        errTable_randRK = [];
         for dt = time
-            Y_randDLRA = Y_inital;
+            Y_randRK = Y_inital;
             for i=1:(T/dt)
-                Y_randDLRA = randDLRA_rk_2(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non_constant_complex");
+                Y_randRK = rand_rk_2(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"non_constant_complex");
             end
 
-            err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
-            errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
-            fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
+            err_randRK = norm(matFull(1,Y_randRK,r) - ref, 'fro');
+            errTable_randRK = [errTable_randRK,err_randRK];
+            fprintf("randRK - dt = %f, err = %e \n", dt, err_randRK);
         end
-        err_table_all_rk2(count,:)=errTable_randDLRA;
+        err_table_all_rk2(count,:)=errTable_randRK;
     end
     err_table_all_rk2_mutiple(:,:,trial)=err_table_all_rk2;
 end
@@ -194,18 +193,18 @@ for trial=1:numer_trials
 
         Y_inital = {X,Y,Omega,Psi};
         % ref = matOdeSolver(matFull(-1,Y0),F,0,T);
-        errTable_randDLRA = [];
+        errTable_randRK = [];
         for dt = time
-            Y_randDLRA = Y_inital;
+            Y_randRK = Y_inital;
             for i=1:(T/dt)
-                Y_randDLRA = randDLRA_rk_2(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"constant_sketch_complex");
+                Y_randRK = rand_rk_2(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"constant_sketch_complex");
             end
 
-            err_randDLRA = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
-            errTable_randDLRA = [errTable_randDLRA,err_randDLRA];
-            fprintf("randDLRA - dt = %f, err = %e \n", dt, err_randDLRA);
+            err_randRK = norm(matFull(1,Y_randRK,r) - ref, 'fro');
+            errTable_randRK = [errTable_randRK,err_randRK];
+            fprintf("randRK - dt = %f, err = %e \n", dt, err_randRK);
         end
-        err_table_all_rk2(count,:)=errTable_randDLRA;
+        err_table_all_rk2(count,:)=errTable_randRK;
     end
     err_table_all_rk2_mutiple_constant(:,:,trial)=err_table_all_rk2;
 end

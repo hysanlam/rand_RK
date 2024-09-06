@@ -40,7 +40,6 @@ S(3:32,3:32)=diag(10.^(-9*ones(32-2,1)));
 Y0=[U(:,1:2),U_perp(:,1:30)]*S(1:32,1:32)*[V(:,1:2),V_perp(:,1:30)]'
 %Y0=odeSolver(Y0,F,0,0.2);
 
-%% Randomized DLR algorithm
 
 time =logspace(log10(5e-2), log10(2.5e-4),9);
 %time =.5e-3
@@ -50,7 +49,7 @@ err_table_all = [];
 
 %% RRK
 
-test_method_rrk=["randDLRA_rk_4","randDLRA_rk_2","randDLRA_euler"]
+test_method_rrk=["rand_rk_4","rand_rk_2","rand_euler"]
 
 
 ref_best_error=[];
@@ -86,20 +85,20 @@ for trial=1:numer_trials
             errTable_rrk = [];
             for dt = time
 
-                Y_randDLRA= Y_inital;
+                Y_randRK= Y_inital;
                 maxT = round(T/dt);
 
                 for i=1:maxT
                     fun=str2func(test_method_rrk(funname));
 
-                    Y_randDLRA = fun(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non_constant_complex");
+                    Y_randRK = fun(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"non_constant_complex");
                     % if funname=="projected_rk3" & dt== .5e-3
                     %     temp=norm(F(Y_projected{1}*Y_projected{2}*Y_projected{3}',i*dt)-calculate_pf(Y_projected,F,i*dt),"fro");
                     %     ortho_norm=[ortho_norm,temp];
                     % end
                     %fprintf("r = %d, t = %f \n", r, i*dt);
                 end
-                ref = odeSolver(Y0,F,0,i*dt); err_rrk = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
+                ref = odeSolver(Y0,F,0,i*dt); err_rrk = norm(matFull(1,Y_randRK,r) - ref, 'fro');
                 errTable_rrk = [errTable_rrk,err_rrk];
                 fprintf("RRK - dt = %f, err = %e \n", dt, err_rrk);
             end

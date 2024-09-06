@@ -1,4 +1,4 @@
-function y = randDLRA_rk_2(x0,F,t0,t1,target_rank,stream,constant_sketch)
+function y = rand_rk_2(x0,F,t0,t1,target_rank,stream,constant_sketch)
 %Note that Z_1=Y_1 and N_1(Z_1)=Y_1 with prob 1, we neglect the calculatation
 %of N_1(Z_1)
 % Here the implementation is slighly different with the notation used in

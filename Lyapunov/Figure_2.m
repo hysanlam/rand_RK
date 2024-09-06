@@ -2,7 +2,7 @@
 
 
 % addpath and cleaning enviroment
-addpath('../rDLR-core')
+addpath('../randRK-core')
 clc; clear; rng(123);
 
 %% Parameters:
@@ -46,7 +46,6 @@ end
 Y0=U*S*U';
 %Y0=odeSolver(Y0,F,0,0.2);
 
-%% Randomized DLR algorithm
 
 time =logspace(log10(2e-1), log10(.5e-3),10);
 %time =.5e-3
@@ -55,7 +54,7 @@ time=T./round(T./time);
 err_table_all = [];
 
 %% RRK
-test_method_rrk=["randDLRA_rk_4","randDLRA_rk_2","randDLRA_euler"]
+test_method_rrk=["rand_rk_4","rand_rk_2","rand_euler"]
 
 ortho_norm=[];
 ref_best_error=[];
@@ -91,20 +90,20 @@ for trial=1:numer_trials
             errTable_rrk = [];
             for dt = time
 
-                Y_randDLRA= Y_inital;
+                Y_randRK= Y_inital;
                 maxT = round(T/dt);
 
                 for i=1:maxT
                     fun=str2func(test_method_rrk(funname));
 
-                    Y_randDLRA = fun(Y_randDLRA,F,(i-1)*dt,i*dt,r,stream,"non_constant");
+                    Y_randRK = fun(Y_randRK,F,(i-1)*dt,i*dt,r,stream,"non_constant");
                     % if funname=="projected_rk3" & dt== .5e-3
                     %     temp=norm(F(Y_projected{1}*Y_projected{2}*Y_projected{3}',i*dt)-calculate_pf(Y_projected,F,i*dt),"fro");
                     %     ortho_norm=[ortho_norm,temp];
                     % end
                     %fprintf("r = %d, t = %f \n", r, i*dt);
                 end
-                ref = odeSolver(Y0,F,0,i*dt); err_rrk = norm(matFull(1,Y_randDLRA,r) - ref, 'fro');
+                ref = odeSolver(Y0,F,0,i*dt); err_rrk = norm(matFull(1,Y_randRK,r) - ref, 'fro');
                 errTable_rrk = [errTable_rrk,err_rrk];
                 fprintf("RRK - dt = %f, err = %e \n", dt, err_rrk);
             end
