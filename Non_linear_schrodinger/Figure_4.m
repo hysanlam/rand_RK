@@ -159,7 +159,7 @@ loglog(time,(0.1.*time).^1,'--','LineWidth',1)
 legend('Location','southeast')
 
 legendStr = [];
-for r = rank
+for r = [2,4,6,8,12]
     legendStr = [legendStr, "Rand Euler rank = " + num2str(r)];
 end
 legend(legendStr)
@@ -183,7 +183,7 @@ loglog(time,(1.5*time).^4,'--','LineWidth',1)
 legend('Location','southeast')
 
 legendStr = [];
-for r = rank_rk4
+for r = [15,20,25,30]
     legendStr = [legendStr, "Rand RK4 rank = " + num2str(r)];
 end
 legendStr = [legendStr, "slope 4"];
