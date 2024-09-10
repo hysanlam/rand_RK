@@ -231,7 +231,7 @@ xlabel('\Deltat')
 ylabel('|| Y^{ref} - Y^{approx} ||_F')
 ylim([1e-10 1])
 grid on
-title('alpha=1e-2')
+title('alpha=3e-4')
 
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
 % Get rid of tool bar and pulldown menus that are along top of figure.
@@ -262,7 +262,7 @@ xlabel('\Deltat')
 ylabel('|| Y^{ref} - Y^{approx} ||_F')
 ylim([1e-10 1])
 grid on
-title('alpha=1e-1')
+title('alpha=3e-4')
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
 % Get rid of tool bar and pulldown menus that are along top of figure.
 %set(gcf, 'Toolbar', 'none', 'Menu', 'none');
@@ -293,7 +293,7 @@ xlabel('\Deltat')
 ylabel('|| Y^{ref} - Y^{approx} ||_F')
 ylim([1e-10 1])
 grid on
-title('alpha=4e-1')
+title('alpha=3e-1')
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
 % Get rid of tool bar and pulldown menus that are along top of figure.
 %set(gcf, 'Toolbar', 'none', 'Menu', 'none');
@@ -321,7 +321,7 @@ xlabel('\Deltat')
 ylabel('|| Y^{ref} - Y^{approx} ||_F')
 ylim([1e-10 1])
 grid on
-title('alpha=1')
+title('alpha=3e-1')
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
 % Get rid of tool bar and pulldown menus that are along top of figure.
 %set(gcf, 'Toolbar', 'none', 'Menu', 'none');
