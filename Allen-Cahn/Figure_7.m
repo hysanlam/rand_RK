@@ -14,6 +14,8 @@ dx=x(2)-x(1);
  a = 1;
     b = -2;
     A = diag(b*ones(1,N)) + diag(a*ones(1,N-1),1) + diag(a*ones(1,N-1),-1); %Discrete Laplacian.
+    A(1,N)=1;
+    A(N,1)=1;
     
 M =(1/(dx.^2))*A;
 
